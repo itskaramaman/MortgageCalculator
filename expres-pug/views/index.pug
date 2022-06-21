@@ -1,0 +1,65 @@
+extends base.pug
+
+block content
+  h1.my-4 Car Mortage Calculator
+  hr
+  .row
+    .col.me-5
+      form(method="POST" action="/")
+        .mb-3
+          h4 Add the details
+        .mb-3
+          label.form-label Car Purchase Amount
+          .input-group.flex-nowrap
+            span#addon-wrapping.input-group-text $
+            input.form-control(type='number' name="purchaseAmount" value=purchaseAmount || "")
+
+        .mb-3
+          label.form-label Down Payment
+          .input-group.flex-nowrap
+            span#addon-wrapping.input-group-text $
+            input.form-control(type='number' name="downPayment" value=downPayment || "")
+        .mb-3
+          label.form-label Select Loan Term
+          select.form-select(name="termSelected")
+            option(value='1' selected= termSelected === 1) One Year (12 months)
+            option(value='2' selected= termSelected === 2) Two Year (24 months)
+            option(value='3' selected= termSelected === 3) Three Year (36 months)
+            option(value='4' selected= termSelected === 4) Four Year (48 months)
+            option(value='5' selected= termSelected === 5) Five Year (60 months)
+            option(value='6' selected= termSelected === 6) Six Year (72 months)
+            option(value='7' selected= termSelected === 7) Seven Year (84 months)
+        .mb-3
+          label.form-label Interest Rate
+          input.form-control(type='number' placeholder="11.33%" readonly)
+        
+        .form-group
+          button.btn.btn-success(type='submit' name="submitBtn" value="calculate") Calculate
+          button.btn.btn-outline-success.ms-3(type='submit' name="submitBtn" value="reset") Reset
+    
+    .col.ms-5
+      h3 Your Payment Info
+      h6 Car Purchase Amount: $#{purchaseAmount}
+      h6 Down Payment: $#{downPayment}
+      h6 Loan Year Selected: #{termSelected} years (#{termSelected * 12} months)
+      br
+      h6 Monthly Payment: $#{monthlyPayment}
+      h6 Monthly Interest: $#{monthlyInterest}
+      h6 Total Monthly Payment: #{totalMonthlyPayment}
+      h6 Total Payment: #{totalPayment}
+
+      if payments
+        p= payments
+        table.table.table-stripped
+          thead
+            tr
+              th(scope='col') #
+              th(scope='col') Amount Paid
+              th(scope='col') Amount Left
+          tbody
+            tr
+              for payment in payments
+                //- th(scope='row')= 
+                td= payment.amountPaid
+                td= payment.amountLeft
+
